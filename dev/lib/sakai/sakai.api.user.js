@@ -158,7 +158,7 @@ define(["jquery",
         },
 
         getUser: function(userid, callback){
-            var authprofileURL = "/~" + userid + "/public/authprofile";
+            var authprofileURL = "/~" + userid + "/public/authprofile.profile.json";
             sakai_serv.loadJSON(authprofileURL, function(success, data) {
                 if (success && data) {
                     callback(true, data);
@@ -584,6 +584,10 @@ define(["jquery",
                 success: function(data) {
                     if ($.isFunction(callback)) {
                         callback(true, data);
+                    }
+                    if (sakai_global.profile && sakai_global.profile.main && sakai_global.profile.main.mode && sakai_global.profile.main.mode.value !== "view") {
+                        $(window).trigger("lhnav.updateCount", ["contacts", 1]);
+                        $(window).trigger("contacts.accepted.sakai");
                     }
                 },
                 error: function() {
